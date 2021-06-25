@@ -30,7 +30,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Data\Models\" />
     <Folder Include="Models\Users\" />
   </ItemGroup>
 

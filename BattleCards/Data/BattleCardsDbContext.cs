@@ -1,9 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BattleCards.Data.Models;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace BattleCards.Data
 {
     public class BattleCardsDbContext : DbContext
-    { 
+    {
+        public DbSet<User> Users { get; init; }
+
+        public DbSet<Card> Cards { get; init; }
+
+        public DbSet<UserCard> UserCards { get; init; }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -13,7 +22,13 @@ namespace BattleCards.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder
+                .Entity<UserCard>()
+                .HasKey(k => new
+                {
+                    k.CardId,
+                    k.UserId
+                });
         }
     }
 }
