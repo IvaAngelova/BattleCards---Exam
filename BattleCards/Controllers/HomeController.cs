@@ -7,6 +7,11 @@ namespace BattleCards.Controllers
     { 
         public HttpResponse Index()
         {
+            if (this.User.IsAuthenticated)
+            {
+                return Redirect("/Cards/All");
+            }
+
             return this.View();
         }
     }
