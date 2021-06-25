@@ -77,5 +77,76 @@ namespace BattleCards.Controllers
 
             return Redirect("/Cards/All");
         }
+
+        public HttpResponse Collection()
+        {
+            if (!this.User.IsAuthenticated)
+            {
+                return this.Redirect("/");
+            }
+
+            var userId = this.User.Id;
+
+            var collection = this.contex
+                .UserCards
+                .Where(u => u.UserId == userId)
+                .Select(c => new CardListingViewModel
+                {
+                    Id = c.Card.Id,
+                    Name = c.Card.Name,
+                    Image = c.Card.ImageUrl,
+                    Keyword = c.Card.Keyword,
+                    Attack = c.Card.Attack,
+                    Health = c.Card.Health,
+                    Description = c.Card.Description
+                })
+                .ToList();
+
+            return View(collection);
+        }
+
+        public HttpResponse AddToCollection(string cardId)
+        {
+            var userId = this.User.Id;
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(cardId))
+            {
+                return Error("UserId and cardId can not be null or empty");
+            }
+
+            var checkForUserCard = this.contex
+                .UserCards
+                .Any(c => c.CardId == cardId && c.UserId == userId);
+
+            if (checkForUserCard)
+            {
+                return Error("Card is already in the collection.");
+            }
+
+            var newUserCard = new UserCard
+            {
+                CardId = cardId,
+                UserId = userId
+            };
+
+            this.contex.UserCards.Add(newUserCard);
+            this.contex.SaveChanges();
+
+            return Redirect("/Cards/Collection");
+        }
+
+        public HttpResponse RemoveFromCollection(string cardId)
+        {
+            var userId = this.User.Id;
+
+            var currentUserCard = this.contex
+                .UserCards
+                .FirstOrDefault(c => c.CardId == cardId && c.UserId == userId);
+
+            this.contex.Remove(currentUserCard);
+            this.contex.SaveChanges();
+
+            return this.Redirect("/Cards/Collection");
+        }
     }
 }
