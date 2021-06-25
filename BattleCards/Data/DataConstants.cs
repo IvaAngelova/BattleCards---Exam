@@ -1,4 +1,4 @@
-﻿namespace SharedTrip.Data
+﻿namespace BattleCards.Data
 {
     public class DataConstants
     {

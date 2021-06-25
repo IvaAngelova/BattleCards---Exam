@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-using SharedTrip.Data;
-
 namespace BattleCards.Data.Models
 {
     public class User

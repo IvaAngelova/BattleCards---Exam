@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+using BattleCards.Models.Cards;
 using BattleCards.Models.Users;
 
 namespace BattleCards.Services
@@ -8,7 +9,7 @@ namespace BattleCards.Services
     {
         ICollection<string> ValidateUserRegistration(RegisterUserFormModel model);
 
-        //ICollection<string> ValidateRepositoryCreation(CreateRepositoryForModel model);
+        ICollection<string> ValidateCardCreation(AddCardViewModel model);
 
         //ICollection<string> ValidateCommitCreation(CreateCommitForModel model);
     }

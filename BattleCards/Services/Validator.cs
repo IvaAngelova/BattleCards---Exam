@@ -1,42 +1,41 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 
+using BattleCards.Data;
 using BattleCards.Models.Users;
-using SharedTrip.Data;
+using BattleCards.Models.Cards;
 
 namespace BattleCards.Services
 {
     public class Validator : IValidator
     {
-        //public ICollection<string> ValidateCommitCreation(CreateCommitForModel model)
-        //{
-        //    var errors = new List<string>();
+        public ICollection<string> ValidateCardCreation(AddCardViewModel model)
+        {
+            var errors = new List<string>();
 
-        //    if (model.Description.Length < DescriptionMinLength)
-        //    {
-        //        errors.Add($"Description '{model.Description}' is not valid! Min Length must be {DescriptionMinLength}");
-        //    }
+            if (model.Name.Length < DataConstants.CardNameMinLength
+                || model.Name.Length > DataConstants.CardNameMaxLength)
+            {
+                errors.Add($"Card name '{model.Name}' is not valid! It must be between {DataConstants.CardNameMinLength} and {DataConstants.CardNameMaxLength}.");
+            }
 
-        //    return errors;
-        //}
+            if (model.Attack < 0)
+            {
+                errors.Add($"Attack '{model.Attack}' can''t be a negative number");
+            }
 
-        //public ICollection<string> ValidateRepositoryCreation(CreateRepositoryForModel model)
-        //{
-        //    var errors = new List<string>();
+            if (model.Health < 0)
+            {
+                errors.Add($"Health '{model.Health}' can''t be a negative number");
+            }
 
-        //    if (model.Name.Length < RepositoryNameMinLength
-        //        || model.Name.Length > RepositoryNameMaxLength)
-        //    {
-        //        errors.Add($"Repository name '{model.Name}' is not valid! It must be between {RepositoryNameMinLength} and {RepositoryNameMaxLength}.");
-        //    }
+            if (model.Description.Length > DataConstants.DescriptionMaxLength)
+            {
+                errors.Add($"Description '{model.Description}' is not valid! Min Length must be {DataConstants.DescriptionMaxLength}");
+            }
 
-        //    if (model.RepositoryType != "Public" && model.RepositoryType != "Private")
-        //    {
-        //        errors.Add($"Repository type can be either 'Public' or 'Private'.");
-        //    }
-
-        //    return errors;
-        //}
+            return errors;
+        }
 
         public ICollection<string> ValidateUserRegistration(RegisterUserFormModel model)
         {
